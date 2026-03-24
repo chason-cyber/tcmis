@@ -16,6 +16,8 @@ def index():
     link +="<hr>"
     link +="<a href=/account>POST傳值(帳號密碼)</a>"
     link +="<hr>"
+    link +="<a href=/operation>數學運算</a>"
+    link +="<hr>"
     return link
 
 
@@ -50,6 +52,33 @@ def account():
         return result
     else:
         return render_template("account.html")
+
+@app.route("/operation", methods=["GET", "POST"])
+def operation():
+    if request.method == "POST":
+        x = float(request.form["x"])
+        y = float(request.form["y"])
+        opt = request.form["opt"]
+
+        if opt == "+":
+            result = x + y
+        elif opt == "-":
+            result = x - y
+        elif opt == "*":
+            result = x * y
+        elif opt == "/":
+            if y == 0:
+                result = "不能除以0"
+            else:
+                result = x / y
+        else:
+            result = "運算子錯誤"
+
+        return render_template("operation.html", result=result)
+    else:
+        return render_template("operation.html", result=None)
+
+
 
 
 if __name__ == "__main__":
